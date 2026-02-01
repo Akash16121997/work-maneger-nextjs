@@ -25,7 +25,7 @@ export async function POST(request) {
     const { title, content, status, UserId } = await request.json();
 
     const authToken = request.cookies.get("logintoken")?.value;
-    const data = jwt.verify(authToken, "your_jwt_secret_key");
+    const data = jwt.verify(authToken, process.env.JWT_SECRET);
 
     const task = new Task({ title, content, status, UserId : data._id });
     const createdTask = await task.save();
