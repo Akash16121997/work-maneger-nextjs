@@ -1,10 +1,6 @@
 import axios from "axios";
 
-
 export const httpAxios = axios.create({
-  baseURL: "http://localhost:3000",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "",
+  withCredentials: true, // 🔥 REQUIRED
 });

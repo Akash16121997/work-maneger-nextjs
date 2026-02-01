@@ -1,28 +1,15 @@
-import { redirect } from "next/dist/server/api-utils";
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  try {
-    const response = NextResponse.json(
-      { message: "Logout successful" },
-      { status: 200 },
-    );
+  const response = NextResponse.json({ message: "Logged out" });
 
-    response.cookies.set("logintoken", "", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 0, // immediately expires
-      path: "/", // IMPORTANT
-    });
+  response.cookies.set("logintoken", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    maxAge: 0,
+  });
 
-    return response;
-  } catch (error) {
-    return NextResponse.json(
-      {
-        message: "Error logging out",
-        error: error.message,
-      },
-      { status: 500 },
-    );
-  }
+  return response;
 }

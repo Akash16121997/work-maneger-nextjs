@@ -14,6 +14,10 @@ const SignUpPage = () => {
       "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png",
   });
 
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const dosignup = async (e) => {
     e.preventDefault();
     if (!signupData.name || !signupData.email || !signupData.password) {
@@ -100,9 +104,14 @@ const SignUpPage = () => {
               <input
                 type="email"
                 value={signupData.email}
-                onChange={(e) =>
-                  setSignupData({ ...signupData, email: e.target.value })
-                }
+                onChange={(e) => {
+                  const email = e.target.value.replace(/\s/g, "").toLowerCase();
+                  setSignupData({ ...signupData, email });
+                  setEmailError(
+                    email && !isValidEmail(email) ? "Invalid email format" : "",
+                  );
+                }}
+                onKeyDown={(e) => e.key === " " && e.preventDefault()}
                 className="w-full mt-1 px-3 py-2 border rounded-full focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
@@ -140,7 +149,7 @@ const SignUpPage = () => {
                 Sign Up
               </button>
               <button
-              type=" button"
+                type=" button"
                 onClick={() => {
                   setSignupData({
                     name: "",
@@ -159,10 +168,10 @@ const SignUpPage = () => {
 
           <p className="text-sm text-center mt-6 fadeIn">
             Already have an account?{" "}
-            <Link href="/LoginPage" >
-            <span className="text-blue-600 cursor-pointer hover:underline">
-              Login
-            </span>
+            <Link href="/LoginPage">
+              <span className="text-blue-600 cursor-pointer hover:underline">
+                Login
+              </span>
             </Link>
           </p>
         </div>
